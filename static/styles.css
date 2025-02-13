@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Chivo Mono";
+  src: url("/fonts/Chivo_Mono/ChivoMono-VariableFont_wght.ttf");
+  font-display: swap;
+}
+
+:root {
+  --dark-neutral: #404040;
+  --medium-neutral: #404040;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: var(--medium-neutral);
+  border-radius: 0rem;
+  height: 0.5rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -.5rem;
+
+  background-color: var(--dark-neutral);
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  border: 1px solid var(--dark-neutral);
+  outline: 3px solid var(--medium-neutral);
+  outline-offset: 0.125rem;
+
+}
+
+input[type="range"]::-moz-range-track {
+  background-color: var(--medium-neutral);
+  border-radius: 0rem;
+  height: 0.5rem;
+}
+
+input[type="range"]::-moz-range-thumb {
+  border: none;
+  border-radius: 0;
+
+  background-color: var(--dark-neutral);
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+  border: 1px solid var(--dark-neutral);
+  outline: 3px solid var(--medium-neutral);
+  outline-offset: 0.125rem;
+}
