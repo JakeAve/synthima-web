@@ -13,6 +13,13 @@
   --medium-neutral: #404040;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dark-neutral: #e5e5e5;
+    --medium-neutral: #e5e5e5;
+  }
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -33,7 +40,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  margin-top: -.5rem;
+  margin-top: -0.5rem;
 
   background-color: var(--dark-neutral);
   height: 1.5rem;
@@ -45,7 +52,6 @@ input[type="range"]:focus::-webkit-slider-thumb {
   border: 1px solid var(--dark-neutral);
   outline: 3px solid var(--medium-neutral);
   outline-offset: 0.125rem;
-
 }
 
 input[type="range"]::-moz-range-track {

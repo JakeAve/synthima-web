@@ -48,7 +48,7 @@ export function Generator() {
   return (
     <>
       <Container
-        bgColor="bg-neutral-50"
+        bgColor="bg-neutral-50 dark:bg-neutral-800"
         class="min-h-[95dvh] flex flex-col"
       >
         <h1 class="w-full text-center mb-8 text-4xl lg:text-6xl">
@@ -75,10 +75,16 @@ export function Generator() {
           </button>
         </div>
       </Container>
-      <Container bgColor="bg-neutral-200" class="flex flex-col gap-8">
+      <Container
+        bgColor="bg-neutral-200 dark:bg-neutral-500"
+        class="flex flex-col gap-8"
+      >
         <CharLength charLengthSignal={charLength} />
       </Container>
-      <Container bgColor="bg-neutral-50" class="grid grid-flow-row gap-8">
+      <Container
+        bgColor="bg-neutral-50 dark:bg-neutral-800"
+        class="grid grid-flow-row gap-8"
+      >
         <h2 class="text-4xl lg:text-6xl">Requirements</h2>
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2">
           {requirementElements}
