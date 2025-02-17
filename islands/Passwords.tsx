@@ -13,7 +13,7 @@ export default function Passwords(props: Props) {
       {passwordsSignal.value.map((v, i) => (
         <Fragment key={i}>
           <button
-            class="text-neutral-700 w-6 h-6 active:bg-neutral-700 active:text-neutral-50 ml-auto"
+            class="w-6 h-6 active:bg-neutral-700 active:text-neutral-50 ml-auto"
             onClick={(e: JSX.TargetedPointerEvent<HTMLButtonElement>) => {
               const btn = e.currentTarget.closest("button");
 
