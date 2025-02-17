@@ -9,7 +9,7 @@ export default function Passwords(props: Props) {
   const { passwordsSignal } = props;
 
   return (
-    <div class="text-2xl w-full overflow-x-scroll grid grid-cols-[auto_auto] gap-x-1 gap-y-2 items-center">
+    <div class="text-2xl w-full overflow-x-auto grid grid-cols-[auto_auto] gap-x-1 gap-y-2 items-center">
       {passwordsSignal.value.map((v, i) => (
         <Fragment key={i}>
           <button
