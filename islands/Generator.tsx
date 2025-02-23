@@ -5,7 +5,6 @@ import { CharSet } from "./CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
 import { Container } from "../components/Container.tsx";
-import { CharSetDialog } from "./CharSetDialog.tsx";
 
 const NUMBER_OF_PASSWORDS = 7;
 
@@ -96,7 +95,6 @@ export function Generator(props: Props) {
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2">
           {requirementElements}
         </div>
-        <CharSetDialog />
         <button
           class="px-4 py-2 text-2xl bg-neutral-700 text-white rounded-sm justify-self-center"
           onClick={add}

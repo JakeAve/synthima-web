@@ -7,6 +7,7 @@ import * as $_app from "./routes/_app.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $CharLength from "./islands/CharLength.tsx";
 import * as $CharSet from "./islands/CharSet.tsx";
+import * as $CharSetDialog from "./islands/CharSetDialog.tsx";
 import * as $Generator from "./islands/Generator.tsx";
 import * as $Passwords from "./islands/Passwords.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -20,6 +21,7 @@ const manifest = {
   islands: {
     "./islands/CharLength.tsx": $CharLength,
     "./islands/CharSet.tsx": $CharSet,
+    "./islands/CharSetDialog.tsx": $CharSetDialog,
     "./islands/Generator.tsx": $Generator,
     "./islands/Passwords.tsx": $Passwords,
   },
