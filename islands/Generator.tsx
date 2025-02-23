@@ -1,50 +1,57 @@
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { genChars, level2CharSet, type Requirement } from "@jakeave/synthima";
+import { genChars, type Requirement } from "@jakeave/synthima";
 import { computed, signal } from "@preact/signals";
 import { CharSet } from "./CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
 import { Container } from "../components/Container.tsx";
+import { CharSetDialog } from "./CharSetDialog.tsx";
 
-const CHAR_LENGTH = 12;
 const NUMBER_OF_PASSWORDS = 7;
 
-const requirements = signal<Requirement[]>(
-  level2CharSet,
-);
+interface Props {
+  requirements: Requirement[];
+  length: number;
+}
 
-const passwords = signal<string[]>(
-  new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
-    genChars(CHAR_LENGTH, requirements.value)
-  ),
-);
+export function Generator(props: Props) {
+  const { requirements: requirementsArg, length: lengthArg } = props;
 
-const charLength = signal<number>(CHAR_LENGTH);
+  const requirements = signal<Requirement[]>(
+    requirementsArg,
+  );
 
-function generate() {
-  try {
-    const reqs = requirements.value.filter((r) => !!r.charSet);
-    passwords.value = new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
-      genChars(charLength.value, [...reqs])
-    );
-  } catch {
-    globalThis.alert(
-      "Requirements are contradictory. Try making the Number of Characters higher.",
-    );
+  const charLength = signal<number>(lengthArg);
+
+  const passwords = signal<string[]>(
+    new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
+      genChars(lengthArg, requirementsArg)
+    ),
+  );
+
+  function generate() {
+    try {
+      const reqs = requirements.value.filter((r) => !!r.charSet);
+      passwords.value = new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
+        genChars(charLength.value, [...reqs])
+      );
+    } catch {
+      globalThis.alert(
+        "Requirements are contradictory. Try making the Number of Characters higher.",
+      );
+    }
   }
-}
 
-function add() {
-  requirements.value = [...requirements.value, { charSet: "", min: 1 }];
-}
+  function add() {
+    requirements.value = [...requirements.value, { charSet: "", min: 1 }];
+  }
 
-const requirementElements = computed(() =>
-  requirements.value.map((r, i) => (
-    <CharSet key={i} reqSignal={requirements} index={i} {...r} />
-  ))
-);
+  const requirementElements = computed(() =>
+    requirements.value.map((r, i) => (
+      <CharSet key={i} reqSignal={requirements} index={i} {...r} />
+    ))
+  );
 
-export function Generator() {
   return (
     <>
       <Container
@@ -89,12 +96,21 @@ export function Generator() {
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2">
           {requirementElements}
         </div>
+        <CharSetDialog />
         <button
           class="px-4 py-2 text-2xl bg-neutral-700 text-white rounded-sm justify-self-center"
           onClick={add}
         >
           Add requirement
         </button>
+      </Container>
+      <Container
+        bgColor="bg-neutral-200 dark:bg-neutral-500"
+        class="flex flex-col gap-8"
+      >
+        <div class="grid place-content-center">
+          &copy; {new Date().getFullYear()} Synthima Password Generator
+        </div>
       </Container>
     </>
   );
