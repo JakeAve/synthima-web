@@ -32,5 +32,3 @@ jobs:
           project: "synthima-password"
           entrypoint: "main.ts"
           root: "."
-          
-          
