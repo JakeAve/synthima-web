@@ -10,6 +10,7 @@ import * as $CharSet from "./islands/CharSet.tsx";
 import * as $CharSetDialog from "./islands/CharSetDialog.tsx";
 import * as $Generator from "./islands/Generator.tsx";
 import * as $Passwords from "./islands/Passwords.tsx";
+import * as $Redirect from "./islands/Redirect.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -24,6 +25,7 @@ const manifest = {
     "./islands/CharSetDialog.tsx": $CharSetDialog,
     "./islands/Generator.tsx": $Generator,
     "./islands/Passwords.tsx": $Passwords,
+    "./islands/Redirect.tsx": $Redirect,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
