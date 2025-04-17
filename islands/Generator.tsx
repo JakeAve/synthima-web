@@ -63,6 +63,7 @@ export function Generator(props: Props) {
         <div class="grid grid-flow-row gap-8 content-center flex-1">
           <Passwords passwordsSignal={passwords} />
           <button
+            type="button"
             disabled={!IS_BROWSER}
             class="px-4 py-2 bg-neutral-700 text-white rounded-sm justify-self-center text-2xl"
             onClick={generate}
@@ -70,6 +71,7 @@ export function Generator(props: Props) {
             Generate
           </button>
           <button
+            type="button"
             class="text-center"
             onClick={() =>
               scrollBy({
@@ -96,6 +98,7 @@ export function Generator(props: Props) {
           {requirementElements}
         </div>
         <button
+          type="button"
           class="px-4 py-2 text-2xl bg-neutral-700 text-white rounded-sm justify-self-center"
           onClick={add}
         >

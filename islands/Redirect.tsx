@@ -5,6 +5,4 @@ export function Redirect() {
     const search = globalThis.location.search;
     globalThis.location.replace(`/${search}`);
   }
-
-  return <></>;
 }

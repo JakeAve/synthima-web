@@ -15,6 +15,7 @@ export function CharSet(props: Props) {
   return (
     <div class="flex flex-row gap-2 w-full items-center text-lg">
       <button
+        type="button"
         aria-label="Remove requirement"
         onClick={() => {
           const confirmed = globalThis.confirm(
