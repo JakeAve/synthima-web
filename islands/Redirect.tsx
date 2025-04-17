@@ -5,4 +5,7 @@ export function Redirect() {
     const search = globalThis.location.search;
     globalThis.location.replace(`/${search}`);
   }
+
+  // deno-lint-ignore jsx-no-useless-fragment
+  return <></>;
 }
