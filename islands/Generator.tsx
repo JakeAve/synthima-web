@@ -58,7 +58,8 @@ export function Generator(props: Props) {
         class="min-h-[95dvh] flex flex-col"
       >
         <h1 class="w-full text-center mb-8 text-4xl lg:text-6xl">
-          Synthima Password Generator
+          Synthima <br />
+          <span class="text-base tracking-widest">Password Generator</span>
         </h1>
         <div class="grid grid-flow-row gap-8 content-center flex-1">
           <Passwords passwordsSignal={passwords} />
