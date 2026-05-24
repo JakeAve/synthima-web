@@ -26,7 +26,6 @@ const PRESETS: Record<PresetKey, Requirement> = {
 };
 
 interface Props {
-  requirements: Requirement[];
   length: number;
 }
 
@@ -56,6 +55,10 @@ export function Generator(props: Props) {
   function generate() {
     try {
       const reqs = requirements.value.filter((r) => !!r.charSet);
+      if (reqs.length === 0) {
+        globalThis.alert("Select at least one character set.");
+        return;
+      }
       passwords.value = new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
         genChars(charLength.value, [...reqs])
       );

@@ -1,29 +1,7 @@
 import type { PageProps } from "fresh";
-import { level2CharSet, Requirement } from "@jakeave/synthima";
 import { Generator } from "../islands/Generator.tsx";
 
 export default function Home({ url }: PageProps) {
-  const symbols = url.searchParams.getAll("symbols");
-  const mins = url.searchParams.getAll("min");
-  const maxes = url.searchParams.getAll("max");
-
-  const requirements: Requirement[] = [];
-  symbols.forEach((s, i) => {
-    try {
-      requirements.push({
-        charSet: s,
-        min: Number(mins[i]) || 1,
-        max: Number(maxes[i]) || undefined,
-      });
-    } catch {
-      // do nothing
-    }
-  });
-
-  if (!requirements.length) {
-    requirements.push(...level2CharSet);
-  }
-
   const length = Number(url.searchParams.get("length")) || 12;
 
   return (
@@ -49,7 +27,7 @@ export default function Home({ url }: PageProps) {
           </svg>
         </a>
       </div>
-      <Generator requirements={requirements} length={length} />
+      <Generator length={length} />
     </main>
   );
 }
