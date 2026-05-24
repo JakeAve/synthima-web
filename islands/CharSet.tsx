@@ -50,8 +50,8 @@ export function CharSet(props: Props) {
           onChange={(e: JSX.TargetedInputEvent<HTMLTextAreaElement>) => {
             props.onDirectEdit?.();
             const text = e.currentTarget.value;
-            const arr = reqSignal.peek();
-            arr[index].charSet = text;
+            const arr = [...reqSignal.peek()];
+            arr[index] = { ...arr[index], charSet: text };
             reqSignal.value = arr;
           }}
         />
@@ -70,8 +70,8 @@ export function CharSet(props: Props) {
             onChange={(e: JSX.TargetedInputEvent<HTMLInputElement>) => {
               props.onDirectEdit?.();
               const text = e.currentTarget.value;
-              const arr = reqSignal.peek();
-              arr[index].min = Number(text);
+              const arr = [...reqSignal.peek()];
+              arr[index] = { ...arr[index], min: Number(text) };
               reqSignal.value = arr;
             }}
           />
@@ -93,8 +93,8 @@ export function CharSet(props: Props) {
             onChange={(e: JSX.TargetedInputEvent<HTMLInputElement>) => {
               props.onDirectEdit?.();
               const text = e.currentTarget.value;
-              const arr = reqSignal.peek();
-              arr[index].max = Number(text);
+              const arr = [...reqSignal.peek()];
+              arr[index] = { ...arr[index], max: Number(text) };
               reqSignal.value = arr;
             }}
           />
