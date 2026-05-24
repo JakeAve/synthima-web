@@ -23,4 +23,11 @@ app.use(async (_ctx, next) => {
   return resp;
 });
 
+// Guarantee no session state is ever stored in the browser.
+app.use(async (_ctx, next) => {
+  const resp = await next();
+  resp.headers.delete("Set-Cookie");
+  return resp;
+});
+
 app.fsRoutes();
