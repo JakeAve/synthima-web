@@ -21,17 +21,19 @@ const KEYS: PresetKey[] = ["uppercase", "lowercase", "numbers", "special"];
 export function SimpleControls(
   { simpleChecks, isAdvancedMode, onToggle, onReset }: Props,
 ) {
-  const locked = isAdvancedMode.value;
-
   return (
     <div class="flex flex-col gap-4">
-      <div class={`grid grid-cols-2 gap-3${locked ? " opacity-50" : ""}`}>
+      <div
+        class={`grid grid-cols-2 gap-3${
+          isAdvancedMode.value ? " opacity-50" : ""
+        }`}
+      >
         {KEYS.map((key) => (
           <label key={key} class="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={simpleChecks.value[key]}
-              disabled={locked}
+              disabled={isAdvancedMode.value}
               onChange={() =>
                 onToggle(key)}
               class="w-4 h-4"
@@ -40,7 +42,7 @@ export function SimpleControls(
           </label>
         ))}
       </div>
-      {locked && (
+      {isAdvancedMode.value && (
         <div class="flex items-center gap-3 text-sm">
           <span>
             Using{" "}
@@ -52,6 +54,7 @@ export function SimpleControls(
             type="button"
             class="px-3 py-1 bg-neutral-700 text-white rounded-sm text-sm"
             onClick={onReset}
+            aria-label="Reset to simple mode"
           >
             Reset
           </button>
