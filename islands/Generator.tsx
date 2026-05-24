@@ -4,9 +4,26 @@ import { computed, signal } from "@preact/signals";
 import { CharSet } from "./CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
+import { SimpleControls } from "./SimpleControls.tsx";
 import { Container } from "../components/Container.tsx";
 
 const NUMBER_OF_PASSWORDS = 7;
+
+type PresetKey = "uppercase" | "lowercase" | "numbers" | "special";
+
+const PRESET_KEYS: PresetKey[] = [
+  "uppercase",
+  "lowercase",
+  "numbers",
+  "special",
+];
+
+const PRESETS: Record<PresetKey, Requirement> = {
+  uppercase: { charSet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", min: 1 },
+  lowercase: { charSet: "abcdefghijklmnopqrstuvwxyz", min: 1 },
+  numbers: { charSet: "0123456789", min: 1 },
+  special: { charSet: "!@#$%^&*", min: 1 },
+};
 
 interface Props {
   requirements: Requirement[];
@@ -14,17 +31,25 @@ interface Props {
 }
 
 export function Generator(props: Props) {
-  const { requirements: requirementsArg, length: lengthArg } = props;
+  const { length: lengthArg } = props;
+
+  const isAdvancedMode = signal<boolean>(false);
+  const simpleChecks = signal<Record<PresetKey, boolean>>({
+    uppercase: true,
+    lowercase: true,
+    numbers: true,
+    special: true,
+  });
 
   const requirements = signal<Requirement[]>(
-    requirementsArg,
+    PRESET_KEYS.map((k) => PRESETS[k]),
   );
 
   const charLength = signal<number>(lengthArg);
 
   const passwords = signal<string[]>(
     new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
-      genChars(lengthArg, requirementsArg)
+      genChars(lengthArg, PRESET_KEYS.map((k) => PRESETS[k]))
     ),
   );
 
@@ -41,13 +66,43 @@ export function Generator(props: Props) {
     }
   }
 
+  function onToggle(key: PresetKey) {
+    const checks = { ...simpleChecks.value, [key]: !simpleChecks.value[key] };
+    simpleChecks.value = checks;
+    requirements.value = PRESET_KEYS.filter((k) => checks[k]).map((k) =>
+      PRESETS[k]
+    );
+  }
+
+  function onReset() {
+    isAdvancedMode.value = false;
+    simpleChecks.value = {
+      uppercase: true,
+      lowercase: true,
+      numbers: true,
+      special: true,
+    };
+    requirements.value = PRESET_KEYS.map((k) => PRESETS[k]);
+  }
+
+  function onDirectEdit() {
+    isAdvancedMode.value = true;
+  }
+
   function add() {
+    onDirectEdit();
     requirements.value = [...requirements.value, { charSet: "", min: 1 }];
   }
 
   const requirementElements = computed(() =>
     requirements.value.map((r, i) => (
-      <CharSet key={i} reqSignal={requirements} index={i} {...r} />
+      <CharSet
+        key={i}
+        reqSignal={requirements}
+        index={i}
+        onDirectEdit={onDirectEdit}
+        {...r}
+      />
     ))
   );
 
@@ -94,7 +149,13 @@ export function Generator(props: Props) {
         bgColor="bg-neutral-50 dark:bg-neutral-800"
         class="grid grid-flow-row gap-8"
       >
-        <h2 class="text-4xl lg:text-6xl">Requirements</h2>
+        <SimpleControls
+          simpleChecks={simpleChecks}
+          isAdvancedMode={isAdvancedMode}
+          onToggle={onToggle}
+          onReset={onReset}
+        />
+        <h2 id="advanced" class="text-4xl lg:text-6xl">Advanced</h2>
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2">
           {requirementElements}
         </div>
