@@ -1,6 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-serif: serif;
+  --font-sans: "Chivo Mono", sans-serif;
+  --font-mono: "Chivo Mono", mono;
+}
 
 @font-face {
   font-family: "Chivo Mono";

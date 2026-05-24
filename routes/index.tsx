@@ -1,46 +1,30 @@
-import { FreshContext, Handlers, PageProps } from "$fresh/server.ts";
+import type { PageProps } from "fresh";
 import { level2CharSet, Requirement } from "@jakeave/synthima";
 import { Generator } from "../islands/Generator.tsx";
 
-export const handler: Handlers = {
-  async GET(req: Request, ctx: FreshContext) {
-    const url = new URL(req.url);
+export default function Home({ url }: PageProps) {
+  const symbols = url.searchParams.getAll("symbols");
+  const mins = url.searchParams.getAll("min");
+  const maxes = url.searchParams.getAll("max");
 
-    const symbols = url.searchParams.getAll("symbols");
-    const mins = url.searchParams.getAll("min");
-    const maxes = url.searchParams.getAll("max");
-
-    const requirements: Requirement[] = [];
-    symbols.forEach((s, i) => {
-      try {
-        requirements.push({
-          charSet: s,
-          min: Number(mins[i]) || 1,
-          max: Number(maxes[i]) || undefined,
-        });
-      } catch {
-        // do nothing
-      }
-    });
-
-    if (!requirements.length) {
-      requirements.push(...level2CharSet);
+  const requirements: Requirement[] = [];
+  symbols.forEach((s, i) => {
+    try {
+      requirements.push({
+        charSet: s,
+        min: Number(mins[i]) || 1,
+        max: Number(maxes[i]) || undefined,
+      });
+    } catch {
+      // do nothing
     }
+  });
 
-    const length = Number(url.searchParams.get("length")) || 12;
+  if (!requirements.length) {
+    requirements.push(...level2CharSet);
+  }
 
-    const resp = await ctx.render({ requirements, length });
-    return resp;
-  },
-};
-
-interface Props {
-  requirements: Requirement[];
-  length: number;
-}
-
-export default function Home(props: PageProps<Props>) {
-  const { requirements, length } = props.data;
+  const length = Number(url.searchParams.get("length")) || 12;
 
   return (
     <main class="font-thin text-neutral-700 dark:text-neutral-200 relative">

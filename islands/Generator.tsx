@@ -1,4 +1,4 @@
-import { IS_BROWSER } from "$fresh/runtime.ts";
+import { IS_BROWSER } from "fresh/runtime";
 import { genChars, type Requirement } from "@jakeave/synthima";
 import { computed, signal } from "@preact/signals";
 import { CharSet } from "./CharSet.tsx";
