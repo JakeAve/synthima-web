@@ -5,6 +5,9 @@
     "build": "vite build",
     "start": "deno serve -A _fresh/server.js",
     "check": "deno fmt --check . && deno lint . && deno check",
+    "pre-commit": "deno fmt --check . && deno lint . && deno check",
+    "pre-push": "deno fmt --check . && deno lint . && deno check",
+    "install:githooks": "git config core.hooksPath .githooks",
     "update": "deno run -A -r jsr:@fresh/update ."
   },
   "lint": {
