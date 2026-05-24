@@ -23,6 +23,14 @@ app.use(async (_ctx, next) => {
   return resp;
 });
 
+// Prevent the browser from leaking the current URL in Referer headers
+// when users navigate away (e.g. via the GitHub link).
+app.use(async (_ctx, next) => {
+  const resp = await next();
+  resp.headers.set("Referrer-Policy", "no-referrer");
+  return resp;
+});
+
 // Guarantee no session state is ever stored in the browser.
 app.use(async (_ctx, next) => {
   const resp = await next();
