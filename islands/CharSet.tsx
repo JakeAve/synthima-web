@@ -5,6 +5,7 @@ import { type JSX } from "preact/jsx-runtime";
 interface Props extends Requirement {
   reqSignal: Signal<Requirement[]>;
   index: number;
+  onDirectEdit?: () => void;
 }
 
 export function CharSet(props: Props) {
@@ -22,6 +23,7 @@ export function CharSet(props: Props) {
             "Are you sure you want to delete this requirement?",
           );
           if (confirmed) {
+            props.onDirectEdit?.();
             const arr = [...reqSignal.value];
             arr.splice(index, 1);
             reqSignal.value = arr;
@@ -46,6 +48,7 @@ export function CharSet(props: Props) {
           id={`chars-${uuid}`}
           value={reqSignal.value[index].charSet || ""}
           onChange={(e: JSX.TargetedInputEvent<HTMLTextAreaElement>) => {
+            props.onDirectEdit?.();
             const text = e.currentTarget.value;
             const arr = reqSignal.peek();
             arr[index].charSet = text;
@@ -65,6 +68,7 @@ export function CharSet(props: Props) {
             inputmode="numeric"
             value={reqSignal.value[index].min || ""}
             onChange={(e: JSX.TargetedInputEvent<HTMLInputElement>) => {
+              props.onDirectEdit?.();
               const text = e.currentTarget.value;
               const arr = reqSignal.peek();
               arr[index].min = Number(text);
@@ -87,6 +91,7 @@ export function CharSet(props: Props) {
             inputmode="numeric"
             value={reqSignal.value[index].max || ""}
             onChange={(e: JSX.TargetedInputEvent<HTMLInputElement>) => {
+              props.onDirectEdit?.();
               const text = e.currentTarget.value;
               const arr = reqSignal.peek();
               arr[index].max = Number(text);
