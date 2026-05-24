@@ -4,15 +4,23 @@ export const app = new App();
 
 app.use(staticFiles());
 
-// Passwords are generated client-side only; block all outbound connections
-// so no script—injected or otherwise—can exfiltrate generated passwords.
+// Fresh attaches a per-request nonce (via Symbol.for("__freshNonce")) to its
+// inline boot <script type="module">. We must include that nonce in script-src
+// so the island hydration actually runs. Passwords are generated client-side
+// only; connect-src 'none' ensures no script can exfiltrate them.
+const FRESH_NONCE = Symbol.for("__freshNonce");
+
 app.use(async (ctx) => {
   const resp = await ctx.next();
+  const nonce =
+    (resp as unknown as Record<symbol, string | undefined>)[FRESH_NONCE];
   resp.headers.set(
     "Content-Security-Policy",
     [
       "default-src 'self'",
-      "script-src 'self'",
+      nonce
+        ? `script-src 'self' 'nonce-${nonce}'`
+        : "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data:",
       "font-src 'self'",
