@@ -6,8 +6,8 @@ app.use(staticFiles());
 
 // Passwords are generated client-side only; block all outbound connections
 // so no script—injected or otherwise—can exfiltrate generated passwords.
-app.use(async (_ctx, next) => {
-  const resp = await next();
+app.use(async (ctx) => {
+  const resp = await ctx.next();
   resp.headers.set(
     "Content-Security-Policy",
     [
@@ -25,15 +25,15 @@ app.use(async (_ctx, next) => {
 
 // Prevent the browser from leaking the current URL in Referer headers
 // when users navigate away (e.g. via the GitHub link).
-app.use(async (_ctx, next) => {
-  const resp = await next();
+app.use(async (ctx) => {
+  const resp = await ctx.next();
   resp.headers.set("Referrer-Policy", "no-referrer");
   return resp;
 });
 
 // Guarantee no session state is ever stored in the browser.
-app.use(async (_ctx, next) => {
-  const resp = await next();
+app.use(async (ctx) => {
+  const resp = await ctx.next();
   resp.headers.delete("Set-Cookie");
   return resp;
 });
