@@ -15,7 +15,7 @@
       "tags": ["fresh", "recommended"]
     }
   },
-  "exclude": ["**/_fresh/*"],
+  "exclude": ["**/_fresh/*", ".playwright-mcp/"],
   "imports": {
     "@jakeave/synthima": "jsr:@jakeave/synthima@^0.0.3",
     "fresh": "jsr:@fresh/core@^2.3.3",

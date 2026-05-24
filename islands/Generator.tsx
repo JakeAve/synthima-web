@@ -1,10 +1,10 @@
 import { IS_BROWSER } from "fresh/runtime";
 import { genChars, type Requirement } from "@jakeave/synthima";
 import { computed, signal } from "@preact/signals";
-import { CharSet } from "./CharSet.tsx";
+import { CharSet } from "../components/CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
-import { SimpleControls } from "./SimpleControls.tsx";
+import { SimpleControls } from "../components/SimpleControls.tsx";
 import { Container } from "../components/Container.tsx";
 
 const NUMBER_OF_PASSWORDS = 7;
