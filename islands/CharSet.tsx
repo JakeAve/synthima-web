@@ -59,7 +59,7 @@ export function CharSet(props: Props) {
           <label for={`min-${uuid}`}>Min</label>
           <input
             class="w-12 p-1 bg-neutral-50 dark:bg-neutral-600 border border-neutral-300 dark:border-neutral-700"
-            id={`max-${uuid}`}
+            id={`min-${uuid}`}
             type="number"
             step="1"
             min="0"
