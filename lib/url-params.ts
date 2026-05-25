@@ -14,22 +14,27 @@ const CHARSET_TO_KEY_MAP = new Map(
 export function parseRequirements(
   params: URLSearchParams,
 ): { requirements: Requirement[]; length: number } {
-  const length = Number(params.get("length")) || 12;
+  const lengthStr = params.get("length");
+  const raw = lengthStr !== null ? Number(lengthStr) : NaN;
+  const length = isNaN(raw) ? 12 : raw;
 
   const requirements: Requirement[] = [];
   for (const raw of params.getAll("r")) {
     if (!raw) continue;
-    const [keyOrChars, minStr, maxStr] = raw.split(":");
-    const preset = PRESET_KEY_MAP.get(keyOrChars);
-    const charSet = preset ? preset.charSet : keyOrChars;
-    if (!charSet) continue;
-    const min = minStr !== undefined ? Number(minStr) : 1;
-    const max = maxStr !== undefined ? Number(maxStr) : undefined;
-    requirements.push({
-      charSet,
-      min: isNaN(min) ? 1 : min,
-      ...(max !== undefined && !isNaN(max) ? { max } : {}),
-    });
+    const parts = raw.split(":");
+    const preset = PRESET_KEY_MAP.get(parts[0]);
+    if (preset) {
+      const min = parts[1] !== undefined ? Number(parts[1]) : 1;
+      const max = parts[2] !== undefined ? Number(parts[2]) : undefined;
+      requirements.push({
+        charSet: preset.charSet,
+        min: isNaN(min) ? 1 : min,
+        ...(max !== undefined && !isNaN(max) ? { max } : {}),
+      });
+    } else {
+      if (!raw) continue;
+      requirements.push({ charSet: raw, min: 1 });
+    }
   }
 
   return { requirements, length };
@@ -44,15 +49,19 @@ export function serializeRequirements(
 
   for (const req of requirements) {
     if (!req.charSet) continue;
-    const key = CHARSET_TO_KEY_MAP.get(req.charSet) ?? req.charSet;
-    const min = req.min ?? 1;
-    const max = req.max;
-    let value = key;
-    if (min !== 1 || max !== undefined) {
-      value += `:${min}`;
-      if (max !== undefined) value += `:${max}`;
+    const presetKey = CHARSET_TO_KEY_MAP.get(req.charSet);
+    if (presetKey) {
+      const min = req.min ?? 1;
+      const max = req.max;
+      let value = presetKey;
+      if (min !== 1 || max !== undefined) {
+        value += `:${min}`;
+        if (max !== undefined) value += `:${max}`;
+      }
+      params.append("r", value);
+    } else {
+      params.append("r", req.charSet);
     }
-    params.append("r", value);
   }
 
   return params;

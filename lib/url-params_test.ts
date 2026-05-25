@@ -149,3 +149,15 @@ Deno.test("round-trip: raw charSet survives encode→decode", () => {
   const { requirements } = parseRequirements(params);
   assertEquals(requirements[0].charSet, "ABC");
 });
+
+Deno.test("round-trip: raw charSet with colon survives encode→decode", () => {
+  const original = [{ charSet: "a:b", min: 1 }];
+  const params = serializeRequirements(original, 10);
+  const { requirements } = parseRequirements(params);
+  assertEquals(requirements[0].charSet, "a:b");
+});
+
+Deno.test("parseRequirements: length=0 does not default to 12", () => {
+  const { length } = parseRequirements(new URLSearchParams("length=0"));
+  assertEquals(length, 0);
+});
