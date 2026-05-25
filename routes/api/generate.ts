@@ -31,7 +31,7 @@ export const handlers = {
 
     const rawCount = params.get("count");
     const count = rawCount !== null ? Number(rawCount) : 1;
-    if (isNaN(count) || count < 1 || count > 100) {
+    if (isNaN(count) || !Number.isInteger(count) || count < 1 || count > 100) {
       return Response.json(
         { error: "count must be between 1 and 100" },
         { status: 400 },

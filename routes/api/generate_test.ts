@@ -90,6 +90,13 @@ Deno.test("count=abc returns 400", async () => {
   assertEquals(body.error, "count must be between 1 and 100");
 });
 
+Deno.test("count=1.5 returns 400", async () => {
+  const res = await handlers.GET(makeReq("?count=1.5"), {} as FreshContext);
+  assertEquals(res.status, 400);
+  const body = await res.json();
+  assertEquals(body.error, "count must be between 1 and 100");
+});
+
 // ── length and charsets ───────────────────────────────────────────────────────
 
 Deno.test("length=4 generates passwords of length 4", async () => {
