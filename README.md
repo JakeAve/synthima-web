@@ -120,7 +120,7 @@ Invalid parameters return `400` with a JSON error body:
 ```json
 { "error": "count must be between 1 and 100" }
 { "error": "format must be json or csv" }
-{ "error": "length must be at least 1" }
+{ "error": "length must be between 1 and 256" }
 ```
 
 ---

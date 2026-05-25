@@ -103,7 +103,14 @@ Deno.test("length=0 returns 400", async () => {
   const res = await handler.GET(makeReq("?length=0"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
-  assertEquals(body.error, "length must be at least 1");
+  assertEquals(body.error, "length must be between 1 and 256");
+});
+
+Deno.test("length=257 returns 400", async () => {
+  const res = await handler.GET(makeReq("?length=257"), {} as FreshContext);
+  assertEquals(res.status, 400);
+  const body = await res.json();
+  assertEquals(body.error, "length must be between 1 and 256");
 });
 
 Deno.test("length=4 generates passwords of length 4", async () => {

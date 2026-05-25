@@ -40,9 +40,9 @@ export const handler = {
 
     const { requirements, length } = parseRequirements(params);
 
-    if (length < 1) {
+    if (length < 1 || length > 256) {
       return Response.json(
-        { error: "length must be at least 1" },
+        { error: "length must be between 1 and 256" },
         { status: 400 },
       );
     }
