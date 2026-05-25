@@ -66,7 +66,7 @@ export function CharSet(props: Props) {
             placeholder="1"
             pattern="[0-9]*"
             inputmode="numeric"
-            value={reqSignal.value[index].min || ""}
+            value={reqSignal.value[index].min ?? ""}
             onChange={(e: JSX.TargetedInputEvent<HTMLInputElement>) => {
               props.onDirectEdit?.();
               const text = e.currentTarget.value;
