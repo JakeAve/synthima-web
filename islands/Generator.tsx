@@ -6,6 +6,12 @@ import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
 import { SimpleControls } from "../components/SimpleControls.tsx";
 import { Container } from "../components/Container.tsx";
+import {
+  PRESET_LOWERCASE,
+  PRESET_NUMBERS,
+  PRESET_SPECIAL,
+  PRESET_UPPERCASE,
+} from "../lib/charsets.ts";
 
 const NUMBER_OF_PASSWORDS = 7;
 
@@ -19,10 +25,10 @@ const PRESET_KEYS: PresetKey[] = [
 ];
 
 const PRESETS: Record<PresetKey, Requirement> = {
-  uppercase: { charSet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", min: 1 },
-  lowercase: { charSet: "abcdefghijklmnopqrstuvwxyz", min: 1 },
-  numbers: { charSet: "0123456789", min: 1 },
-  special: { charSet: "!@#$%^&*", min: 1 },
+  uppercase: { charSet: PRESET_UPPERCASE.charSet, min: 1 },
+  lowercase: { charSet: PRESET_LOWERCASE.charSet, min: 1 },
+  numbers: { charSet: PRESET_NUMBERS.charSet, min: 1 },
+  special: { charSet: PRESET_SPECIAL.charSet, min: 1 },
 };
 
 interface Props {
