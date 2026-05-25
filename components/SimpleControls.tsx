@@ -24,21 +24,21 @@ export function SimpleControls(
   return (
     <div class="flex flex-col gap-4">
       <div
-        class={`grid grid-cols-2 gap-3${
+        class={`grid grid-cols-1 sm:grid-cols-2 gap-4${
           isAdvancedMode.value ? " opacity-50" : ""
         }`}
       >
         {KEYS.map((key) => (
-          <label key={key} class="flex items-center gap-2 cursor-pointer">
+          <label key={key} class="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={simpleChecks.value[key]}
               disabled={isAdvancedMode.value}
               onChange={() =>
                 onToggle(key)}
-              class="w-4 h-4"
+              class="w-7 h-7 flex-shrink-0"
             />
-            <span>{LABELS[key]}</span>
+            <span class="text-lg">{LABELS[key]}</span>
           </label>
         ))}
       </div>

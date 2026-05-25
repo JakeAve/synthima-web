@@ -10,8 +10,8 @@ export function CharLength(props: Props) {
 
   return (
     <>
-      <label class="text-4xl lg:text-6xl" for="char-length">
-        Number of Characters
+      <label class="text-lg font-medium" for="char-length">
+        Number of characters
       </label>
       <div class="w-full">
         <input

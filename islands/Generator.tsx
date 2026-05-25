@@ -138,7 +138,7 @@ export function Generator(props: Props) {
                 behavior: "smooth",
               })}
           >
-            ⌄ Customize ⌄
+            ⌄ Configure ⌄
           </button>
         </div>
       </Container>
@@ -146,18 +146,19 @@ export function Generator(props: Props) {
         bgColor="bg-neutral-200 dark:bg-neutral-500"
         class="flex flex-col gap-8"
       >
+        <h2 class="text-4xl lg:text-6xl">Configuration</h2>
         <CharLength charLengthSignal={charLength} />
-      </Container>
-      <Container
-        bgColor="bg-neutral-50 dark:bg-neutral-800"
-        class="grid grid-flow-row gap-8"
-      >
         <SimpleControls
           simpleChecks={simpleChecks}
           isAdvancedMode={isAdvancedMode}
           onToggle={onToggle}
           onReset={onReset}
         />
+      </Container>
+      <Container
+        bgColor="bg-neutral-50 dark:bg-neutral-800"
+        class="grid grid-flow-row gap-8"
+      >
         <h2 id="advanced" class="text-4xl lg:text-6xl">Advanced</h2>
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2">
           {requirementElements}
