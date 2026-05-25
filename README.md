@@ -84,6 +84,47 @@ Every configuration is encoded in the URL so you can share or bookmark specific 
 
 ---
 
+## REST API
+
+Generate passwords programmatically via `GET /api/generate`.
+
+**Base URL:** `https://synthima-web.jakeave.deno.net/api/generate`
+
+### Parameters
+
+| Param | Default | Description |
+|---|---|---|
+| `length` | `12` | Password length (integer ≥ 1) |
+| `r` | — | Charset requirement — repeatable; same format as URL params above |
+| `count` | `1` | Number of passwords to return (integer 1–100) |
+| `format` | `json` | `json` → JSON array, `csv` → one password per line |
+
+### Examples
+
+```bash
+# One password, default settings
+curl "https://synthima-web.jakeave.deno.net/api/generate"
+# ["M#0DpNE7c45&"]
+
+# 5 strong passwords, 16 chars
+curl "https://synthima-web.jakeave.deno.net/api/generate?length=16&r=uppercase&r=lowercase&r=numbers&r=special&count=5"
+
+# 10 PINs as plain text (one per line)
+curl "https://synthima-web.jakeave.deno.net/api/generate?length=6&r=numbers&count=10&format=csv"
+```
+
+### Errors
+
+Invalid parameters return `400` with a JSON error body:
+
+```json
+{ "error": "count must be between 1 and 100" }
+{ "error": "format must be json or csv" }
+{ "error": "length must be at least 1" }
+```
+
+---
+
 ## Setup
 
 **Prerequisites:** [Deno](https://deno.com/) v2+
