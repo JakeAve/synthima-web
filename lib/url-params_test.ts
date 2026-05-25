@@ -161,3 +161,11 @@ Deno.test("parseRequirements: length=0 does not default to 12", () => {
   const { length } = parseRequirements(new URLSearchParams("length=0"));
   assertEquals(length, 0);
 });
+
+Deno.test("serializeRequirements: raw charSet with non-default min emits only charSet (no min)", () => {
+  const params = serializeRequirements(
+    [{ charSet: "XYZ", min: 3 }],
+    10,
+  );
+  assertEquals(params.getAll("r"), ["XYZ"]);
+});

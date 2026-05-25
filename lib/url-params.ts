@@ -32,7 +32,6 @@ export function parseRequirements(
         ...(max !== undefined && !isNaN(max) ? { max } : {}),
       });
     } else {
-      if (!raw) continue;
       requirements.push({ charSet: raw, min: 1 });
     }
   }
