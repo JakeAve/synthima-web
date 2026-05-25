@@ -12,6 +12,8 @@ import {
   PRESET_SPECIAL,
   PRESET_UPPERCASE,
 } from "../lib/charsets.ts";
+import { type CharSetPreset } from "../lib/charsets.ts";
+import { PresetPicker } from "../components/PresetPicker.tsx";
 
 const NUMBER_OF_PASSWORDS = 7;
 
@@ -39,6 +41,7 @@ export function Generator(props: Props) {
   const { length: lengthArg } = props;
 
   const isAdvancedMode = signal<boolean>(false);
+  const isPickerOpen = signal<boolean>(false);
   const simpleChecks = signal<Record<PresetKey, boolean>>({
     uppercase: true,
     lowercase: true,
@@ -98,9 +101,19 @@ export function Generator(props: Props) {
     isAdvancedMode.value = true;
   }
 
-  function add() {
+  function addPresets(presets: CharSetPreset[]) {
+    if (presets.length === 0) return;
     onDirectEdit();
-    requirements.value = [...requirements.value, { charSet: "", min: 1 }];
+    requirements.value = [
+      ...requirements.value,
+      ...presets.map((p) => ({ charSet: p.charSet, min: 1 })),
+    ];
+  }
+
+  if (IS_BROWSER) {
+    globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Escape") isPickerOpen.value = false;
+    });
   }
 
   const requirementElements = computed(() =>
@@ -172,10 +185,19 @@ export function Generator(props: Props) {
         <button
           type="button"
           class="px-4 py-2 text-2xl bg-neutral-700 text-white rounded-sm justify-self-center"
-          onClick={add}
+          onClick={() => {
+            isPickerOpen.value = true;
+          }}
         >
           Add requirement
         </button>
+        <PresetPicker
+          isOpen={isPickerOpen}
+          onAdd={(presets) => {
+            addPresets(presets);
+            isPickerOpen.value = false;
+          }}
+        />
       </Container>
       <Container
         bgColor="bg-neutral-200 dark:bg-neutral-500"
