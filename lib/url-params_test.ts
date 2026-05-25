@@ -2,7 +2,13 @@
 
 import { assertEquals } from "jsr:@std/assert@1";
 import { parseRequirements, serializeRequirements } from "./url-params.ts";
-import { PRESET_UPPERCASE, PRESET_LOWERCASE, PRESET_NUMBERS, PRESET_SPECIAL, PRESET_GREEK } from "./charsets.ts";
+import {
+  PRESET_GREEK,
+  PRESET_LOWERCASE,
+  PRESET_NUMBERS,
+  PRESET_SPECIAL,
+  PRESET_UPPERCASE,
+} from "./charsets.ts";
 
 // ── parseRequirements ─────────────────────────────────────────────────────────
 
@@ -23,7 +29,9 @@ Deno.test("parseRequirements: non-numeric length defaults to 12", () => {
 });
 
 Deno.test("parseRequirements: known preset key resolves to charSet", () => {
-  const { requirements } = parseRequirements(new URLSearchParams("r=uppercase"));
+  const { requirements } = parseRequirements(
+    new URLSearchParams("r=uppercase"),
+  );
   assertEquals(requirements.length, 1);
   assertEquals(requirements[0].charSet, PRESET_UPPERCASE.charSet);
   assertEquals(requirements[0].min, 1);
@@ -31,7 +39,9 @@ Deno.test("parseRequirements: known preset key resolves to charSet", () => {
 });
 
 Deno.test("parseRequirements: multiple preset keys", () => {
-  const params = new URLSearchParams("r=uppercase&r=lowercase&r=numbers&r=special");
+  const params = new URLSearchParams(
+    "r=uppercase&r=lowercase&r=numbers&r=special",
+  );
   const { requirements } = parseRequirements(params);
   assertEquals(requirements.length, 4);
   assertEquals(requirements[0].charSet, PRESET_UPPERCASE.charSet);
@@ -41,13 +51,17 @@ Deno.test("parseRequirements: multiple preset keys", () => {
 });
 
 Deno.test("parseRequirements: parses min from colon-delimited value", () => {
-  const { requirements } = parseRequirements(new URLSearchParams("r=numbers:3"));
+  const { requirements } = parseRequirements(
+    new URLSearchParams("r=numbers:3"),
+  );
   assertEquals(requirements[0].min, 3);
   assertEquals(requirements[0].max, undefined);
 });
 
 Deno.test("parseRequirements: parses min and max", () => {
-  const { requirements } = parseRequirements(new URLSearchParams("r=numbers:2:8"));
+  const { requirements } = parseRequirements(
+    new URLSearchParams("r=numbers:2:8"),
+  );
   assertEquals(requirements[0].min, 2);
   assertEquals(requirements[0].max, 8);
 });

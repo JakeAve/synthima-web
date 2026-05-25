@@ -88,7 +88,10 @@ export function Generator(props: Props) {
   // Live URL sync — runs whenever requirements or charLength change
   useEffect(() => {
     return effect(() => {
-      const params = serializeRequirements(requirements.value, charLength.value);
+      const params = serializeRequirements(
+        requirements.value,
+        charLength.value,
+      );
       globalThis.history?.replaceState(null, "", "?" + params.toString());
     });
   }, []);
