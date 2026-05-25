@@ -31,82 +31,82 @@ export const PRESET_SPECIAL: CharSetPreset = {
 
 const PRESET_GERMAN_UPPER: CharSetPreset = {
   name: "German uppercase",
-  charSet: "ÄÖÜ",
+  charSet: PRESET_UPPERCASE.charSet + "ÄÖÜ",
 };
 
 const PRESET_GERMAN_LOWER: CharSetPreset = {
   name: "German lowercase",
-  charSet: "äöüß",
+  charSet: PRESET_LOWERCASE.charSet + "äöüß",
 };
 
 const PRESET_FRENCH_UPPER: CharSetPreset = {
   name: "French uppercase",
-  charSet: "ÀÂÆÇÈÉÊËÎÏÔŒÙÛÜ",
+  charSet: PRESET_UPPERCASE.charSet + "ÀÂÆÇÈÉÊËÎÏÔŒÙÛÜ",
 };
 
 const PRESET_FRENCH_LOWER: CharSetPreset = {
   name: "French lowercase",
-  charSet: "àâæçèéêëîïôœùûü",
+  charSet: PRESET_LOWERCASE.charSet + "àâæçèéêëîïôœùûü",
 };
 
 const PRESET_SPANISH: CharSetPreset = {
   name: "Spanish",
-  charSet: "ñÑ¿¡",
+  charSet: PRESET_UPPERCASE.charSet + PRESET_LOWERCASE.charSet + "ñÑ¿¡",
 };
 
 const PRESET_NORDIC_UPPER: CharSetPreset = {
   name: "Nordic uppercase",
-  charSet: "ÅÆØÐÞ",
+  charSet: PRESET_UPPERCASE.charSet + "ÅÆØÐÞ",
 };
 
 const PRESET_NORDIC_LOWER: CharSetPreset = {
   name: "Nordic lowercase",
-  charSet: "åæøðþ",
+  charSet: PRESET_LOWERCASE.charSet + "åæøðþ",
 };
 
 const PRESET_CENTRAL_EU_UPPER: CharSetPreset = {
   name: "Central European uppercase",
-  charSet: "ČŠŽŘÝŮĚŇŤĎĄĆĘŁŃÓŚŹŻ",
+  charSet: PRESET_UPPERCASE.charSet + "ČŠŽŘÝŮĚŇŤĎĄĆĘŁŃÓŚŹŻ",
 };
 
 const PRESET_CENTRAL_EU_LOWER: CharSetPreset = {
   name: "Central European lowercase",
-  charSet: "čšžřýůěňťďąćęłńóśźż",
+  charSet: PRESET_LOWERCASE.charSet + "čšžřýůěňťďąćęłńóśźż",
 };
 
 const PRESET_ROMANIAN_UPPER: CharSetPreset = {
   name: "Romanian uppercase",
-  charSet: "ĂÂÎȘȚ",
+  charSet: PRESET_UPPERCASE.charSet + "ĂÂÎȘȚ",
 };
 
 const PRESET_ROMANIAN_LOWER: CharSetPreset = {
   name: "Romanian lowercase",
-  charSet: "ăâîșț",
+  charSet: PRESET_LOWERCASE.charSet + "ăâîșț",
 };
 
 const PRESET_TURKISH_UPPER: CharSetPreset = {
   name: "Turkish uppercase",
-  charSet: "ÇĞİŞÖÜ",
+  charSet: PRESET_UPPERCASE.charSet + "ÇĞİŞÖÜ",
 };
 
 const PRESET_TURKISH_LOWER: CharSetPreset = {
   name: "Turkish lowercase",
-  charSet: "çğışöü",
+  charSet: PRESET_LOWERCASE.charSet + "çğışöü",
 };
 
 const PRESET_PORTUGUESE_UPPER: CharSetPreset = {
   name: "Portuguese uppercase",
-  charSet: "ÃÕÁÉÍÓÚÂÊÎÔÛÀÇ",
+  charSet: PRESET_UPPERCASE.charSet + "ÃÕÁÉÍÓÚÂÊÎÔÛÀÇ",
 };
 
 const PRESET_PORTUGUESE_LOWER: CharSetPreset = {
   name: "Portuguese lowercase",
-  charSet: "ãõáéíóúâêîôûàç",
+  charSet: PRESET_LOWERCASE.charSet + "ãõáéíóúâêîôûàç",
 };
 
 const PRESET_LATIN_EXTENDED: CharSetPreset = {
   name: "Latin Extended (all)",
-  charSet:
+  charSet: PRESET_UPPERCASE.charSet + PRESET_LOWERCASE.charSet +
     "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćČčĎďĐđĘęĚěĞğİıŁłŃńŇňŒœŘřŚśŞşŠšŢţŤťŮůŹźŻżŽžÎîȘșȚț",
 };
 
