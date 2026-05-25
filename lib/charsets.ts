@@ -114,7 +114,7 @@ const PRESET_LATIN_EXTENDED: CharSetPreset = {
 
 const PRESET_EXTENDED_SPECIAL: CharSetPreset = {
   name: "Extended special",
-  charSet: "£€¥₹₽₩₪₿±×÷≠≈∞∑∏√∫«»...^|^||...†‡§¶©®™°¿¡←→↑↓↔",
+  charSet: `£€¥₹₽₩₪₿±×÷≠≈∞∑∏√∫«»„“”‘’…†‡§¶©®™°¿¡←→↑↓↔`,
 };
 
 const PRESET_CURRENCY: CharSetPreset = {
@@ -134,7 +134,7 @@ const PRESET_ARROWS: CharSetPreset = {
 
 const PRESET_TYPOGRAPHIC: CharSetPreset = {
   name: "Typographic punctuation",
-  charSet: "«»...^||section*",
+  charSet: `«»„""''…†‡§¶•`,
 };
 
 const PRESET_SUPERSCRIPTS: CharSetPreset = {
