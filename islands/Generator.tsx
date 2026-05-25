@@ -1,6 +1,6 @@
 import { IS_BROWSER } from "fresh/runtime";
 import { genChars, type Requirement } from "@jakeave/synthima";
-import { computed, signal } from "@preact/signals";
+import { computed, effect, signal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { CharSet } from "../components/CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
@@ -15,6 +15,7 @@ import {
   PRESET_UPPERCASE,
 } from "../lib/charsets.ts";
 import { PresetPicker } from "../components/PresetPicker.tsx";
+import { serializeRequirements } from "../lib/url-params.ts";
 
 const NUMBER_OF_PASSWORDS = 7;
 
@@ -34,33 +35,63 @@ const PRESETS: Record<PresetKey, Requirement> = {
   special: { charSet: PRESET_SPECIAL.charSet, min: 1 },
 };
 
+const BASIC_CHARSET_SET = new Set(
+  PRESET_KEYS.map((k) => PRESETS[k].charSet),
+);
+
 interface Props {
   length: number;
+  requirements: Requirement[];
 }
 
 export function Generator(props: Props) {
-  const { length: lengthArg } = props;
+  const { length: lengthArg, requirements: requirementsArg } = props;
 
-  const isAdvancedMode = signal<boolean>(false);
+  // Empty requirements (no URL params) = simple mode with all defaults on.
+  // All-basic requirements = simple mode with matching toggles.
+  const isSimple = requirementsArg.length === 0 ||
+    requirementsArg.every((r) => BASIC_CHARSET_SET.has(r.charSet));
+
+  const initialSimpleChecks: Record<PresetKey, boolean> = {
+    uppercase: false,
+    lowercase: false,
+    numbers: false,
+    special: false,
+  };
+  if (requirementsArg.length === 0) {
+    for (const k of PRESET_KEYS) initialSimpleChecks[k] = true;
+  } else if (isSimple) {
+    for (const r of requirementsArg) {
+      for (const k of PRESET_KEYS) {
+        if (PRESETS[k].charSet === r.charSet) initialSimpleChecks[k] = true;
+      }
+    }
+  }
+
+  const isAdvancedMode = signal<boolean>(!isSimple);
   const isPickerOpen = signal<boolean>(false);
-  const simpleChecks = signal<Record<PresetKey, boolean>>({
-    uppercase: true,
-    lowercase: true,
-    numbers: true,
-    special: true,
-  });
+  const simpleChecks = signal<Record<PresetKey, boolean>>(initialSimpleChecks);
 
-  const requirements = signal<Requirement[]>(
-    PRESET_KEYS.map((k) => PRESETS[k]),
-  );
+  const initReqs = requirementsArg.length > 0
+    ? requirementsArg
+    : PRESET_KEYS.map((k) => PRESETS[k]);
 
+  const requirements = signal<Requirement[]>(initReqs);
   const charLength = signal<number>(lengthArg);
 
   const passwords = signal<string[]>(
     new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
-      genChars(lengthArg, PRESET_KEYS.map((k) => PRESETS[k]))
+      genChars(lengthArg, initReqs)
     ),
   );
+
+  // Live URL sync — runs whenever requirements or charLength change
+  useEffect(() => {
+    return effect(() => {
+      const params = serializeRequirements(requirements.value, charLength.value);
+      globalThis.history?.replaceState(null, "", "?" + params.toString());
+    });
+  }, []);
 
   function generate() {
     try {

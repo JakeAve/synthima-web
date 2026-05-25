@@ -1,8 +1,9 @@
 import type { PageProps } from "fresh";
 import { Generator } from "../islands/Generator.tsx";
+import { parseRequirements } from "../lib/url-params.ts";
 
 export default function Home({ url }: PageProps) {
-  const length = Number(url.searchParams.get("length")) || 12;
+  const { requirements, length } = parseRequirements(url.searchParams);
 
   return (
     <main class="font-thin text-neutral-700 dark:text-neutral-200 relative">
@@ -27,7 +28,7 @@ export default function Home({ url }: PageProps) {
           </svg>
         </a>
       </div>
-      <Generator length={length} />
+      <Generator requirements={requirements} length={length} />
     </main>
   );
 }

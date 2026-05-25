@@ -32,7 +32,7 @@ export function PresetPicker({ isOpen, onAdd }: Props) {
   function handleAdd() {
     const selected: CharSetPreset[] = [];
     if (checked.has("__custom__")) {
-      selected.push({ name: "Custom", charSet: "" });
+      selected.push({ name: "Custom", key: "", charSet: "" });
     }
     CHAR_SET_PRESETS.forEach((p) => {
       if (checked.has(p.name)) selected.push(p);
