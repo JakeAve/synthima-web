@@ -16,7 +16,7 @@ const DEFAULT_REQUIREMENTS: Requirement[] = [
   { charSet: PRESET_SPECIAL.charSet, min: 1 },
 ];
 
-export const handlers = {
+export const handler = {
   GET(req: Request, _ctx: FreshContext): Response {
     const url = new URL(req.url);
     const params = url.searchParams;
@@ -38,12 +38,29 @@ export const handlers = {
       );
     }
 
-    const { requirements: parsed, length } = parseRequirements(params);
-    const requirements = parsed.length > 0 ? parsed : DEFAULT_REQUIREMENTS;
+    const { requirements, length } = parseRequirements(params);
+
+    if (length < 1) {
+      return Response.json(
+        { error: "length must be at least 1" },
+        { status: 400 },
+      );
+    }
+
+    const activeRequirements = requirements.length > 0
+      ? requirements
+      : DEFAULT_REQUIREMENTS;
 
     const passwords: string[] = [];
-    for (let i = 0; i < count; i++) {
-      passwords.push(genChars(length, requirements));
+    try {
+      for (let i = 0; i < count; i++) {
+        passwords.push(genChars(length, activeRequirements));
+      }
+    } catch {
+      return Response.json(
+        { error: "Requirements are contradictory for the given length" },
+        { status: 400 },
+      );
     }
 
     if (format === "csv") {

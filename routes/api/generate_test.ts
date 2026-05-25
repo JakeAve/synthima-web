@@ -1,7 +1,7 @@
 // routes/api/generate_test.ts
 import { assertEquals } from "jsr:@std/assert@1";
 import type { FreshContext } from "fresh";
-import { handlers } from "./generate.ts";
+import { handler } from "./generate.ts";
 
 function makeReq(search = ""): Request {
   return new Request(`http://localhost/api/generate${search}`);
@@ -10,7 +10,7 @@ function makeReq(search = ""): Request {
 // ── format ────────────────────────────────────────────────────────────────────
 
 Deno.test("default format is JSON array with one password", async () => {
-  const res = await handlers.GET(makeReq(), {} as FreshContext);
+  const res = await handler.GET(makeReq(), {} as FreshContext);
   assertEquals(res.status, 200);
   assertEquals(res.headers.get("Content-Type"), "application/json");
   const body = await res.json();
@@ -20,14 +20,14 @@ Deno.test("default format is JSON array with one password", async () => {
 });
 
 Deno.test("format=json returns Content-Type application/json", async () => {
-  const res = await handlers.GET(makeReq("?format=json"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?format=json"), {} as FreshContext);
   assertEquals(res.headers.get("Content-Type"), "application/json");
   const body = await res.json();
   assertEquals(Array.isArray(body), true);
 });
 
 Deno.test("format=csv returns Content-Type text/plain", async () => {
-  const res = await handlers.GET(makeReq("?format=csv"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?format=csv"), {} as FreshContext);
   assertEquals(res.headers.get("Content-Type"), "text/plain");
   const body = await res.text();
   assertEquals(typeof body, "string");
@@ -35,7 +35,7 @@ Deno.test("format=csv returns Content-Type text/plain", async () => {
 });
 
 Deno.test("format=csv with count=3 returns 3 newline-separated passwords", async () => {
-  const res = await handlers.GET(
+  const res = await handler.GET(
     makeReq("?format=csv&count=3"),
     {} as FreshContext,
   );
@@ -49,7 +49,7 @@ Deno.test("format=csv with count=3 returns 3 newline-separated passwords", async
 });
 
 Deno.test("format=xml returns 400", async () => {
-  const res = await handlers.GET(makeReq("?format=xml"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?format=xml"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
   assertEquals(body.error, "format must be json or csv");
@@ -58,40 +58,40 @@ Deno.test("format=xml returns 400", async () => {
 // ── count ─────────────────────────────────────────────────────────────────────
 
 Deno.test("count=5 returns 5 passwords", async () => {
-  const res = await handlers.GET(makeReq("?count=5"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=5"), {} as FreshContext);
   const body = await res.json();
   assertEquals(body.length, 5);
 });
 
 Deno.test("count=100 returns 100 passwords", async () => {
-  const res = await handlers.GET(makeReq("?count=100"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=100"), {} as FreshContext);
   const body = await res.json();
   assertEquals(body.length, 100);
 });
 
 Deno.test("count=0 returns 400", async () => {
-  const res = await handlers.GET(makeReq("?count=0"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=0"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
   assertEquals(body.error, "count must be between 1 and 100");
 });
 
 Deno.test("count=101 returns 400", async () => {
-  const res = await handlers.GET(makeReq("?count=101"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=101"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
   assertEquals(body.error, "count must be between 1 and 100");
 });
 
 Deno.test("count=abc returns 400", async () => {
-  const res = await handlers.GET(makeReq("?count=abc"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=abc"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
   assertEquals(body.error, "count must be between 1 and 100");
 });
 
 Deno.test("count=1.5 returns 400", async () => {
-  const res = await handlers.GET(makeReq("?count=1.5"), {} as FreshContext);
+  const res = await handler.GET(makeReq("?count=1.5"), {} as FreshContext);
   assertEquals(res.status, 400);
   const body = await res.json();
   assertEquals(body.error, "count must be between 1 and 100");
@@ -99,8 +99,15 @@ Deno.test("count=1.5 returns 400", async () => {
 
 // ── length and charsets ───────────────────────────────────────────────────────
 
+Deno.test("length=0 returns 400", async () => {
+  const res = await handler.GET(makeReq("?length=0"), {} as FreshContext);
+  assertEquals(res.status, 400);
+  const body = await res.json();
+  assertEquals(body.error, "length must be at least 1");
+});
+
 Deno.test("length=4 generates passwords of length 4", async () => {
-  const res = await handlers.GET(
+  const res = await handler.GET(
     makeReq("?length=4&r=uppercase"),
     {} as FreshContext,
   );
@@ -111,7 +118,7 @@ Deno.test("length=4 generates passwords of length 4", async () => {
 });
 
 Deno.test("no r params generates successfully", async () => {
-  const res = await handlers.GET(makeReq(), {} as FreshContext);
+  const res = await handler.GET(makeReq(), {} as FreshContext);
   assertEquals(res.status, 200);
   const body = await res.json();
   assertEquals(body.length, 1);
