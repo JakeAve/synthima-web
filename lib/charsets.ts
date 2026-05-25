@@ -203,7 +203,7 @@ const PRESET_SERBIAN: CharSetPreset = {
 
 // ── Greek ─────────────────────────────────────────────────────────────────────
 
-const PRESET_GREEK: CharSetPreset = {
+export const PRESET_GREEK: CharSetPreset = {
   name: "Greek",
   key: "greek",
   charSet: "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρσςτυφχψω",
