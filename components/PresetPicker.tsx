@@ -76,7 +76,7 @@ export function PresetPicker({ isOpen, onAdd }: Props) {
           <input
             type="search"
             placeholder="Search..."
-            autofocus
+            autoFocus
             class="w-full px-3 py-2 text-lg border border-neutral-300 dark:border-neutral-600 rounded bg-white dark:bg-neutral-700"
             value={query}
             onInput={(e) => setQuery((e.target as HTMLInputElement).value)}

@@ -1,18 +1,19 @@
 import { IS_BROWSER } from "fresh/runtime";
 import { genChars, type Requirement } from "@jakeave/synthima";
 import { computed, signal } from "@preact/signals";
+import { useEffect } from "preact/hooks";
 import { CharSet } from "../components/CharSet.tsx";
 import { CharLength } from "./CharLength.tsx";
 import Passwords from "./Passwords.tsx";
 import { SimpleControls } from "../components/SimpleControls.tsx";
 import { Container } from "../components/Container.tsx";
 import {
+  type CharSetPreset,
   PRESET_LOWERCASE,
   PRESET_NUMBERS,
   PRESET_SPECIAL,
   PRESET_UPPERCASE,
 } from "../lib/charsets.ts";
-import { type CharSetPreset } from "../lib/charsets.ts";
 import { PresetPicker } from "../components/PresetPicker.tsx";
 
 const NUMBER_OF_PASSWORDS = 7;
@@ -110,11 +111,13 @@ export function Generator(props: Props) {
     ];
   }
 
-  if (IS_BROWSER) {
-    globalThis.addEventListener("keydown", (e: KeyboardEvent) => {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") isPickerOpen.value = false;
-    });
-  }
+    };
+    globalThis.addEventListener("keydown", handler);
+    return () => globalThis.removeEventListener("keydown", handler);
+  }, []);
 
   const requirementElements = computed(() =>
     requirements.value.map((r, i) => (
