@@ -11,3 +11,6 @@ _fresh/
 node_modules/
 
 .DS_Store
+
+# Design specs and implementation plans (local only)
+docs/superpowers/
