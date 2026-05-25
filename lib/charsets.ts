@@ -149,56 +149,31 @@ const PRESET_SUBSCRIPTS: CharSetPreset = {
 
 // ── Cyrillic ──────────────────────────────────────────────────────────────────
 
-const PRESET_RUSSIAN_UPPER: CharSetPreset = {
-  name: "Russian uppercase",
-  charSet: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ",
+const PRESET_RUSSIAN: CharSetPreset = {
+  name: "Russian",
+  charSet: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя",
 };
 
-const PRESET_RUSSIAN_LOWER: CharSetPreset = {
-  name: "Russian lowercase",
-  charSet: "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+const PRESET_UKRAINIAN: CharSetPreset = {
+  name: "Ukrainian",
+  charSet: "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя",
 };
 
-const PRESET_UKRAINIAN_UPPER: CharSetPreset = {
-  name: "Ukrainian uppercase",
-  charSet: "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ",
+const PRESET_BULGARIAN: CharSetPreset = {
+  name: "Bulgarian",
+  charSet: "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯабвгдежзийклмнопрстуфхцчшщъьюя",
 };
 
-const PRESET_UKRAINIAN_LOWER: CharSetPreset = {
-  name: "Ukrainian lowercase",
-  charSet: "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя",
-};
-
-const PRESET_BULGARIAN_UPPER: CharSetPreset = {
-  name: "Bulgarian uppercase",
-  charSet: "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ",
-};
-
-const PRESET_BULGARIAN_LOWER: CharSetPreset = {
-  name: "Bulgarian lowercase",
-  charSet: "абвгдежзийклмнопрстуфхцчшщъьюя",
-};
-
-const PRESET_SERBIAN_UPPER: CharSetPreset = {
-  name: "Serbian Cyrillic uppercase",
-  charSet: "АБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШ",
-};
-
-const PRESET_SERBIAN_LOWER: CharSetPreset = {
-  name: "Serbian Cyrillic lowercase",
-  charSet: "абвгдђежзијклљмнњопрстћуфхцчџш",
+const PRESET_SERBIAN: CharSetPreset = {
+  name: "Serbian Cyrillic",
+  charSet: "АБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШабвгдђежзијклљмнњопрстћуфхцчџш",
 };
 
 // ── Greek ─────────────────────────────────────────────────────────────────────
 
-const PRESET_GREEK_UPPER: CharSetPreset = {
-  name: "Greek uppercase",
-  charSet: "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ",
-};
-
-const PRESET_GREEK_LOWER: CharSetPreset = {
-  name: "Greek lowercase",
-  charSet: "αβγδεζηθικλμνξοπρσςτυφχψω",
+const PRESET_GREEK: CharSetPreset = {
+  name: "Greek",
+  charSet: "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρσςτυφχψω",
 };
 
 // ── Arabic ────────────────────────────────────────────────────────────────────
@@ -289,20 +264,15 @@ const PRESET_GEORGIAN: CharSetPreset = {
   ).join(""),
 };
 
-const PRESET_ARMENIAN_UPPER: CharSetPreset = {
-  name: "Armenian uppercase",
-  charSet: Array.from(
-    { length: 38 },
-    (_, i) => String.fromCodePoint(0x0531 + i),
-  ).join(""),
-};
-
-const PRESET_ARMENIAN_LOWER: CharSetPreset = {
-  name: "Armenian lowercase",
-  charSet: Array.from(
-    { length: 38 },
-    (_, i) => String.fromCodePoint(0x0561 + i),
-  ).join(""),
+const PRESET_ARMENIAN: CharSetPreset = {
+  name: "Armenian",
+  charSet:
+    Array.from({ length: 38 }, (_, i) => String.fromCodePoint(0x0531 + i)).join(
+      "",
+    ) +
+    Array.from({ length: 38 }, (_, i) => String.fromCodePoint(0x0561 + i)).join(
+      "",
+    ),
 };
 
 const PRESET_THAI_CONSONANTS: CharSetPreset = {
@@ -348,16 +318,11 @@ export const CHAR_SET_PRESETS: CharSetPreset[] = [
   PRESET_TYPOGRAPHIC,
   PRESET_SUPERSCRIPTS,
   PRESET_SUBSCRIPTS,
-  PRESET_RUSSIAN_UPPER,
-  PRESET_RUSSIAN_LOWER,
-  PRESET_UKRAINIAN_UPPER,
-  PRESET_UKRAINIAN_LOWER,
-  PRESET_BULGARIAN_UPPER,
-  PRESET_BULGARIAN_LOWER,
-  PRESET_SERBIAN_UPPER,
-  PRESET_SERBIAN_LOWER,
-  PRESET_GREEK_UPPER,
-  PRESET_GREEK_LOWER,
+  PRESET_RUSSIAN,
+  PRESET_UKRAINIAN,
+  PRESET_BULGARIAN,
+  PRESET_SERBIAN,
+  PRESET_GREEK,
   PRESET_ARABIC_LETTERS,
   PRESET_ARABIC_INDIC,
   PRESET_ARABIC_PUNCT,
@@ -370,8 +335,7 @@ export const CHAR_SET_PRESETS: CharSetPreset[] = [
   PRESET_KOREAN_CONSONANTS,
   PRESET_KOREAN_VOWELS,
   PRESET_GEORGIAN,
-  PRESET_ARMENIAN_UPPER,
-  PRESET_ARMENIAN_LOWER,
+  PRESET_ARMENIAN,
   PRESET_THAI_CONSONANTS,
   PRESET_THAI_VOWELS,
 ];
