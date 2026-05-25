@@ -197,7 +197,7 @@ const PRESET_BULGARIAN: CharSetPreset = {
 
 const PRESET_SERBIAN: CharSetPreset = {
   name: "Serbian Cyrillic",
-  key: "serbian",
+  key: "serbian-cyrillic",
   charSet: "АБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШабвгдђежзијклљмнњопрстћуфхцчџш",
 };
 
@@ -233,7 +233,7 @@ const PRESET_ARABIC_PUNCT: CharSetPreset = {
 
 const PRESET_HEBREW: CharSetPreset = {
   name: "Hebrew letters",
-  key: "hebrew",
+  key: "hebrew-letters",
   charSet: "אבגדהוזחטיכלמנסעפצקרשתךםןףץ",
 };
 
