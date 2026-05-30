@@ -1,5 +1,5 @@
 // routes/api/generate.ts
-import type { FreshContext } from "fresh";
+import type { Context } from "fresh";
 import { genChars, type Requirement } from "@jakeave/synthima";
 import {
   PRESET_LOWERCASE,
@@ -17,7 +17,7 @@ const DEFAULT_REQUIREMENTS: Requirement[] = [
 ];
 
 export const handler = {
-  GET(req: Request, _ctx: FreshContext): Response {
+  GET(req: Request, _ctx: Context<unknown>): Response {
     const url = new URL(req.url);
     const params = url.searchParams;
 
