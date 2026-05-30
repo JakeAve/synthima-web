@@ -5,8 +5,10 @@
     "build": "vite build",
     "start": "deno serve -A _fresh/server.js",
     "check": "deno fmt --check . && deno lint . && deno check",
+    "test": "deno test lib/ routes/",
+    "test:e2e": "deno task build && deno test -A e2e/",
     "pre-commit": "deno fmt --check . && deno lint . && deno check",
-    "pre-push": "deno fmt --check . && deno lint . && deno check && deno test",
+    "pre-push": "deno fmt --check . && deno lint . && deno check && deno task test",
     "install:githooks": "git config core.hooksPath .githooks",
     "update": "deno run -A -r jsr:@fresh/update ."
   },
@@ -18,6 +20,9 @@
   "exclude": ["**/_fresh/*", ".playwright-mcp/"],
   "imports": {
     "@jakeave/synthima": "jsr:@jakeave/synthima@^0.0.3",
+    "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@^1.29.0",
+    "@modelcontextprotocol/sdk/": "npm:/@modelcontextprotocol/sdk@^1.29.0/",
+    "zod": "npm:zod@^3.25.76",
     "fresh": "jsr:@fresh/core@^2.3.3",
     "preact": "npm:preact@^10.29.1",
     "@preact/signals": "npm:@preact/signals@^2.9.0",
