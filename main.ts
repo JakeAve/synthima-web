@@ -12,6 +12,9 @@ const FRESH_NONCE = Symbol.for("__freshNonce");
 
 app.use(async (ctx) => {
   const resp = await ctx.next();
+  // The MCP endpoint is a JSON-RPC API, not a rendered page; the page-oriented
+  // CSP below (script/style/connect rules) doesn't apply to it.
+  if (new URL(ctx.req.url).pathname.startsWith("/mcp")) return resp;
   const nonce =
     (resp as unknown as Record<symbol, string | undefined>)[FRESH_NONCE];
   resp.headers.set(
