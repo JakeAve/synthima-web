@@ -22,6 +22,7 @@ function watchForPort(
   stream: ReadableStream<Uint8Array>,
   pattern: RegExp,
   onPort: (port: number) => void,
+  onChunk?: (text: string) => void,
 ): void {
   (async () => {
     const reader = stream.getReader();
@@ -31,7 +32,9 @@ function watchForPort(
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        buf += decoder.decode(value, { stream: true });
+        const piece = decoder.decode(value, { stream: true });
+        onChunk?.(piece);
+        buf += piece;
         const match = buf.match(pattern);
         if (match) {
           onPort(Number(match[1]));
@@ -72,12 +75,23 @@ async function startServer(
     stderr: "piped",
   }).spawn();
 
+  let captured = "";
+  const onChunk = (text: string) => {
+    captured += text;
+  };
   const port = await new Promise<number>((resolve, reject) => {
-    watchForPort(child.stdout, portPattern, resolve);
-    watchForPort(child.stderr, portPattern, resolve);
+    watchForPort(child.stdout, portPattern, resolve, onChunk);
+    watchForPort(child.stderr, portPattern, resolve, onChunk);
     const id = setTimeout(
-      () => reject(new Error(`${label} did not report a port within 30s`)),
-      30_000,
+      () =>
+        reject(
+          new Error(
+            `${label} did not report a port within 60s. Output:\n${
+              captured.slice(-2000)
+            }`,
+          ),
+        ),
+      60_000,
     );
     Deno.unrefTimer(id);
   });
