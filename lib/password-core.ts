@@ -123,6 +123,19 @@ export function generatePasswords(opts: GenerateOptions): string[] {
     ? opts.requirements
     : DEFAULT_REQUIREMENTS;
 
+  // A minimum longer than the password can never be satisfied, so this is the
+  // same verdict the loop below would reach — but reaching it there means
+  // synthima allocates for the requested minimum first. With a `min` in the
+  // 1e15 range that burns ~90s of CPU and enough memory to kill the process,
+  // reachable from one unauthenticated request. Decide it up front instead.
+  for (const req of requirements) {
+    if (req.min !== undefined && req.min > length) {
+      throw new ContradictoryRequirementsError(
+        "Requirements are contradictory for the given length",
+      );
+    }
+  }
+
   const passwords: string[] = [];
   try {
     for (let i = 0; i < count; i++) {
