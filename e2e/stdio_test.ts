@@ -5,7 +5,8 @@
 // path a desktop client uses.
 
 import { assertEquals } from "jsr:@std/assert@1";
-import { Client, StdioClientTransport } from "./mcp-client.ts";
+import { Client } from "@modelcontextprotocol/client";
+import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 
 // deno-lint-ignore no-explicit-any
 function text(result: any): string {
@@ -18,7 +19,9 @@ Deno.test({
   sanitizeOps: false,
   sanitizeResources: false,
   fn: async (t) => {
-    const client = new Client({ name: "e2e-stdio", version: "0.0.0" });
+    const client = new Client({ name: "e2e-stdio", version: "0.0.0" }, {
+      versionNegotiation: { mode: { pin: "2026-07-28" } },
+    });
     await client.connect(
       new StdioClientTransport({
         command: "deno",
@@ -30,7 +33,7 @@ Deno.test({
       await t.step("tools/list exposes both tools", async () => {
         const { tools } = await client.listTools();
         assertEquals(
-          tools.map((x) => x.name).sort(),
+          tools.map((x: { name: string }) => x.name).sort(),
           ["generate_password", "list_charset_presets"],
         );
       });

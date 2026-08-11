@@ -1,24 +1,31 @@
 // lib/mcp-server_test.ts
-import { assertEquals, assertExists } from "jsr:@std/assert@1";
-import { Client, InMemoryTransport } from "./mcp-sdk.ts";
-import { createServer } from "./mcp-server.ts";
+import { assertEquals, assertExists, assertRejects } from "jsr:@std/assert@1";
+import {
+  Client,
+  StreamableHTTPClientTransport,
+} from "@modelcontextprotocol/client";
+import { mcp } from "../routes/mcp.ts";
 
+// There is no in-memory transport for the 2026-07-28 revision — InMemoryTransport
+// only speaks the 2025 era. Driving the route's own handler keeps the tests
+// in-process while exercising the real wire; the URL is never dialed. It has to
+// be *that* handler and not a lookalike built here, or its options (legacy
+// serving, subscription limits) go untested.
 async function connect(): Promise<
   { client: Client; close: () => Promise<void> }
 > {
-  const server = createServer();
-  const [clientTransport, serverTransport] = InMemoryTransport
-    .createLinkedPair();
-  const client = new Client({ name: "test-client", version: "0.0.0" });
-  await Promise.all([
-    server.connect(serverTransport),
-    client.connect(clientTransport),
-  ]);
+  const client = new Client({ name: "test-client", version: "0.0.0" }, {
+    versionNegotiation: { mode: { pin: "2026-07-28" } },
+  });
+  const transport = new StreamableHTTPClientTransport(
+    new URL("http://test.local/mcp"),
+    { fetch: (url, init) => mcp.fetch(new Request(url, init)) },
+  );
+  await client.connect(transport);
   return {
     client,
     close: async () => {
       await client.close();
-      await server.close();
     },
   };
 }
@@ -129,4 +136,45 @@ Deno.test("list_charset_presets returns the full catalog", async () => {
   } finally {
     await close();
   }
+});
+
+Deno.test("a 2025-era client is rejected, not silently served", async () => {
+  // legacy: "reject" is deliberate. A default-options client speaks the old
+  // `initialize` handshake; it must fail at connect rather than get served.
+  const client = new Client({ name: "old-client", version: "0.0.0" });
+  const transport = new StreamableHTTPClientTransport(
+    new URL("http://test.local/mcp"),
+    { fetch: (url, init) => mcp.fetch(new Request(url, init)) },
+  );
+  await assertRejects(() => client.connect(transport));
+});
+
+Deno.test("subscriptions/listen is refused instead of holding a stream open", async () => {
+  // Guards the maxSubscriptions: 0 in routes/mcp.ts. Without it the SDK
+  // answers with an open text/event-stream that never closes.
+  const res = await mcp.fetch(
+    new Request("http://test.local/mcp", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json, text/event-stream",
+        "mcp-method": "subscriptions/listen",
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "subscriptions/listen",
+        params: {
+          notifications: { toolsListChanged: true },
+          _meta: {
+            "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities": {},
+          },
+        },
+      }),
+    }),
+  );
+  assertEquals(res.headers.get("content-type"), "application/json");
+  const body = await res.json();
+  assertEquals(body.error.message, "Subscription limit reached");
 });

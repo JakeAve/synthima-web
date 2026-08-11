@@ -4,7 +4,7 @@
 // bound here, so the same factory backs both the stdio entry point and the
 // remote /mcp route.
 
-import { McpServer } from "./mcp-sdk.ts";
+import { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import {
   ContradictoryRequirementsError,
@@ -35,10 +35,13 @@ const requirementSchema = z.object({
   charSet: z.string().optional().describe(
     "A literal set of characters to draw from. Use instead of `preset`.",
   ),
-  min: z.number().int().min(0).optional().describe(
+  // Bounded so the published schema does not advertise the JS safe-integer
+  // ceiling zod 4 emits for an unbounded `.int()`. Neither bound can usefully
+  // exceed the longest possible password.
+  min: z.number().int().min(0).max(MAX_LENGTH).optional().describe(
     "Minimum occurrences of this set in each password (default 1).",
   ),
-  max: z.number().int().min(0).optional().describe(
+  max: z.number().int().min(0).max(MAX_LENGTH).optional().describe(
     "Maximum occurrences of this set in each password.",
   ),
 });
@@ -58,7 +61,7 @@ export function createServer(): McpServer {
         "Generate one or more cryptographically random passwords. Returns " +
         "one password per line. Optionally constrain which character sets " +
         "are used and how often via `requirements`.",
-      inputSchema: {
+      inputSchema: z.object({
         length: z.number().int().min(MIN_LENGTH).max(MAX_LENGTH).default(
           DEFAULT_LENGTH,
         ).describe(`Password length (${MIN_LENGTH}–${MAX_LENGTH}).`),
@@ -71,7 +74,7 @@ export function createServer(): McpServer {
           "Character-set requirements. Omit to use a strong default mix of " +
             "uppercase, lowercase, numbers, and special characters.",
         ),
-      },
+      }),
       annotations: { readOnlyHint: true, openWorldHint: false },
     },
     ({ length, count, requirements }) => {
@@ -108,7 +111,7 @@ export function createServer(): McpServer {
         "List the available character-set presets (key, human name, size, " +
         "and a short sample). Use a preset's `key` in generate_password's " +
         "`requirements`.",
-      inputSchema: {},
+      inputSchema: z.object({}),
       annotations: { readOnlyHint: true, openWorldHint: false },
     },
     () => {

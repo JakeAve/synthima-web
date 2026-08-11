@@ -11,6 +11,6 @@ export default defineConfig({
   // it natively instead of routing it through Vite's dev SSR transform, which
   // otherwise fails to evaluate it (the production build bundles it fine).
   ssr: {
-    external: ["@modelcontextprotocol/sdk", "zod"],
+    external: ["@modelcontextprotocol/server", "zod"],
   },
 });
