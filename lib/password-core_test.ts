@@ -146,3 +146,20 @@ Deno.test("listPresets sample never exceeds the preset size", () => {
     assertEquals([...p.sample].length <= p.size, true);
   }
 });
+
+Deno.test("an unsatisfiable min is rejected immediately, not after allocating", () => {
+  // Regression guard: this used to reach synthima, which allocated for the
+  // requested minimum — ~90s of CPU and enough memory to kill the process,
+  // reachable from one unauthenticated /api/generate request.
+  const t = performance.now();
+  assertThrows(
+    () =>
+      generatePasswords({
+        length: 256,
+        count: 100,
+        requirements: [{ charSet: "0123456789", min: 9007199254740991 }],
+      }),
+    ContradictoryRequirementsError,
+  );
+  assertEquals(performance.now() - t < 1000, true);
+});

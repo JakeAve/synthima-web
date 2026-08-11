@@ -196,6 +196,18 @@ Or configure it directly in your client:
 Both transports are thin wrappers over the same generator core as the web app
 and REST API.
 
+### Protocol revision
+
+Both transports speak the
+[2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28) revision,
+which is stateless: no `initialize` handshake and no session id, so every
+request stands alone and the server holds nothing between calls — long-lived
+subscription streams are refused outright, since nothing here is subscribable.
+
+Only that revision is served. Clients speaking the older 2025-era protocol are
+turned away at connect rather than silently downgraded, so make sure yours is
+recent enough.
+
 ---
 
 ## Setup

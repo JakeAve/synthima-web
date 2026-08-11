@@ -5,7 +5,10 @@
 // answers, run the MCP round-trip checks against /mcp, and tear it down.
 
 import { assertEquals } from "jsr:@std/assert@1";
-import { Client, StreamableHTTPClientTransport } from "./mcp-client.ts";
+import {
+  Client,
+  StreamableHTTPClientTransport,
+} from "@modelcontextprotocol/client";
 
 const BUILT_SERVER = "_fresh/server.js";
 
@@ -158,16 +161,20 @@ export async function runRemoteChecks(
   baseUrl: string,
   t: Deno.TestContext,
 ): Promise<void> {
-  const client = new Client({ name: "e2e-remote", version: "0.0.0" });
+  // Pinned to the modern revision: if the endpoint ever stops serving
+  // 2026-07-28, connect() rejects instead of silently falling back to 2025.
+  const client = new Client({ name: "e2e-remote", version: "0.0.0" }, {
+    versionNegotiation: { mode: { pin: "2026-07-28" } },
+  });
   await client.connect(
     new StreamableHTTPClientTransport(new URL(`${baseUrl}/mcp`)),
   );
 
   try {
-    await t.step("initialize + tools/list exposes both tools", async () => {
+    await t.step("tools/list exposes both tools", async () => {
       const { tools } = await client.listTools();
       assertEquals(
-        tools.map((x) => x.name).sort(),
+        tools.map((x: { name: string }) => x.name).sort(),
         ["generate_password", "list_charset_presets"],
       );
     });
