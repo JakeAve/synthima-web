@@ -2,7 +2,7 @@
 
 Generate cryptographically random passwords using `crypto.getRandomValues`.
 
-**[Open the app →](https://synthima-web.jakeave.deno.net/)**
+The hosted app is linked from this repo's **About** section.
 
 Built on top of the JSR library [Synthima](https://jsr.io/@jakeave/synthima).
 
@@ -36,15 +36,15 @@ setups.
 
 ### Example links
 
-| Description                | Link                                                                                                                                      |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Strong password (16 chars) | [uppercase + lowercase + numbers + symbols](https://synthima-web.jakeave.deno.net/?length=16&r=uppercase&r=lowercase&r=numbers&r=special) |
-| 6-digit PIN                | [numbers only](https://synthima-web.jakeave.deno.net/?length=6&r=numbers)                                                                 |
-| Letters only               | [uppercase + lowercase, no numbers or symbols](https://synthima-web.jakeave.deno.net/?length=12&r=uppercase&r=lowercase)                  |
-| Numbers-heavy              | [at least 4 digits](https://synthima-web.jakeave.deno.net/?length=16&r=uppercase&r=lowercase&r=numbers:4&r=special)                       |
-| Constrained symbols        | [max 2 special chars](https://synthima-web.jakeave.deno.net/?length=16&r=uppercase&r=lowercase&r=numbers&r=special:1:2)                   |
-| Greek + numbers            | [exotic mix](https://synthima-web.jakeave.deno.net/?length=20&r=greek&r=numbers)                                                          |
-| Russian + symbols          | [Cyrillic with special chars](https://synthima-web.jakeave.deno.net/?length=24&r=russian&r=numbers&r=special)                             |
+| Description                | Query                                                                                                 |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Strong password (16 chars) | uppercase + lowercase + numbers + symbols — `/?length=16&r=uppercase&r=lowercase&r=numbers&r=special` |
+| 6-digit PIN                | numbers only — `/?length=6&r=numbers`                                                                 |
+| Letters only               | uppercase + lowercase, no numbers or symbols — `/?length=12&r=uppercase&r=lowercase`                  |
+| Numbers-heavy              | at least 4 digits — `/?length=16&r=uppercase&r=lowercase&r=numbers:4&r=special`                       |
+| Constrained symbols        | max 2 special chars — `/?length=16&r=uppercase&r=lowercase&r=numbers&r=special:1:2`                   |
+| Greek + numbers            | exotic mix — `/?length=20&r=greek&r=numbers`                                                          |
+| Russian + symbols          | Cyrillic with special chars — `/?length=24&r=russian&r=numbers&r=special`                             |
 
 ### Preset keys
 
@@ -93,7 +93,7 @@ setups.
 
 Generate passwords programmatically via `GET /api/generate`.
 
-**Base URL:** `https://synthima-web.jakeave.deno.net/api/generate`
+**Path:** `/api/generate` on the hosted app (or `http://localhost:5173` in dev)
 
 ### Parameters
 
@@ -108,14 +108,14 @@ Generate passwords programmatically via `GET /api/generate`.
 
 ```bash
 # One password, default settings
-curl "https://synthima-web.jakeave.deno.net/api/generate"
+curl "https://<host>/api/generate"
 # ["M#0DpNE7c45&"]
 
 # 5 strong passwords, 16 chars
-curl "https://synthima-web.jakeave.deno.net/api/generate?length=16&r=uppercase&r=lowercase&r=numbers&r=special&count=5"
+curl "https://<host>/api/generate?length=16&r=uppercase&r=lowercase&r=numbers&r=special&count=5"
 
 # 10 PINs as plain text (one per line)
-curl "https://synthima-web.jakeave.deno.net/api/generate?length=6&r=numbers&count=10&format=csv"
+curl "https://<host>/api/generate?length=6&r=numbers&count=10&format=csv"
 ```
 
 ### Errors
@@ -164,11 +164,11 @@ strong default mix of uppercase, lowercase, numbers, and special characters.
 Streamable HTTP at `POST /mcp` — no install required, just add the URL:
 
 ```bash
-claude mcp add --transport http password-gen https://synthima-web.jakeave.deno.net/mcp
+claude mcp add --transport http password-gen https://<host>/mcp
 ```
 
 In Claude Desktop / Claude.ai: **Settings → Connectors → Add custom connector**
-and paste `https://synthima-web.jakeave.deno.net/mcp`.
+and paste `https://<host>/mcp`.
 
 ### Local (stdio)
 
