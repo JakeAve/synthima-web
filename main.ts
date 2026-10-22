@@ -1,6 +1,8 @@
 import { App, staticFiles } from "fresh";
 
-export const app = new App();
+export const app = new App({
+  basePath: Deno.env.get("BASE_PATH")?.replace(/\/$/, "") ?? "",
+});
 
 app.use(staticFiles());
 
