@@ -3,6 +3,7 @@
   "tasks": {
     "dev": "vite",
     "build": "vite build",
+    "build:site": "deno task build && deno run -A prerender.ts",
     "start": "deno serve -A _fresh/server.js",
     "check": "deno fmt --check . && deno lint . && deno check",
     "test": "deno test lib/ routes/",

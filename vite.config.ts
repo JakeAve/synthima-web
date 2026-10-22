@@ -3,6 +3,7 @@ import { fresh } from "@fresh/plugin-vite";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  base: Deno.env.get("BASE_PATH") ?? "/",
   plugins: [
     fresh(),
     tailwindcss(),

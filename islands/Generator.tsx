@@ -15,7 +15,7 @@ import {
   PRESET_UPPERCASE,
 } from "../lib/charsets.ts";
 import { PresetPicker } from "../components/PresetPicker.tsx";
-import { serializeRequirements } from "../lib/url-params.ts";
+import { parseRequirements, serializeRequirements } from "../lib/url-params.ts";
 
 const NUMBER_OF_PASSWORDS = 7;
 
@@ -45,7 +45,11 @@ interface Props {
 }
 
 export function Generator(props: Props) {
-  const { length: lengthArg, requirements: requirementsArg } = props;
+  // A prerendered (static) page is built without a query string, so re-read
+  // the live URL in the browser; on a live server this equals the SSR props.
+  const { length: lengthArg, requirements: requirementsArg } = IS_BROWSER
+    ? parseRequirements(new URLSearchParams(globalThis.location.search))
+    : props;
 
   // Empty requirements (no URL params) = simple mode with all defaults on.
   // All-basic requirements = simple mode with matching toggles.
