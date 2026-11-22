@@ -163,3 +163,22 @@ Deno.test("an unsatisfiable min is rejected immediately, not after allocating", 
   );
   assertEquals(performance.now() - t < 1000, true);
 });
+
+Deno.test("resolveRequirements rejects an empty charSet", () => {
+  assertThrows(
+    () => resolveRequirements([{ charSet: "" }]),
+    ValidationError,
+  );
+});
+
+Deno.test("generatePasswords rejects a fractional length", () => {
+  assertThrows(() => generatePasswords({ length: 1.5 }), ValidationError);
+});
+
+Deno.test("generatePasswords allows max 0 (unlimited)", () => {
+  const [pw] = generatePasswords({
+    length: 8,
+    requirements: [{ charSet: "abc", min: 1, max: 0 }],
+  });
+  assertEquals(pw.length, 8);
+});

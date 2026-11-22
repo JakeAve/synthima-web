@@ -94,14 +94,14 @@ export function resolveRequirements(
 
 function validateBounds(length: number, count: number): void {
   if (
-    isNaN(count) || !Number.isInteger(count) || count < MIN_COUNT ||
+    !Number.isInteger(count) || count < MIN_COUNT ||
     count > MAX_COUNT
   ) {
     throw new ValidationError(
       `count must be between ${MIN_COUNT} and ${MAX_COUNT}`,
     );
   }
-  if (isNaN(length) || length < MIN_LENGTH || length > MAX_LENGTH) {
+  if (!Number.isInteger(length) || length < MIN_LENGTH || length > MAX_LENGTH) {
     throw new ValidationError(
       `length must be between ${MIN_LENGTH} and ${MAX_LENGTH}`,
     );

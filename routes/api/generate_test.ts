@@ -126,3 +126,13 @@ Deno.test("no r params generates successfully", async () => {
   const body = await res.json();
   assertEquals(body.length, 1);
 });
+
+Deno.test("length=1.5 returns 400", async () => {
+  const res = await handler.GET(makeCtx("?length=1.5"));
+  assertEquals(res.status, 400);
+});
+
+Deno.test("fractional r min returns 200", async () => {
+  const res = await handler.GET(makeCtx("?r=lowercase:1.5:2.5"));
+  assertEquals(res.status, 200);
+});

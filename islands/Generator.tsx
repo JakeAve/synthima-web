@@ -15,6 +15,7 @@ import {
   PRESET_UPPERCASE,
 } from "../lib/charsets.ts";
 import { PresetPicker } from "../components/PresetPicker.tsx";
+import { DEFAULT_LENGTH, MAX_LENGTH } from "../lib/password-core.ts";
 import { parseRequirements, serializeRequirements } from "../lib/url-params.ts";
 
 const NUMBER_OF_PASSWORDS = 7;
@@ -47,9 +48,14 @@ interface Props {
 export function Generator(props: Props) {
   // A prerendered (static) page is built without a query string, so re-read
   // the live URL in the browser; on a live server this equals the SSR props.
-  const { length: lengthArg, requirements: requirementsArg } = IS_BROWSER
+  const { length: rawLength, requirements: requirementsArg } = IS_BROWSER
     ? parseRequirements(new URLSearchParams(globalThis.location.search))
     : props;
+  // synthima rejects non-integer / < 1 lengths; fall back rather than crash.
+  const lengthArg = Number.isInteger(rawLength) && rawLength >= 1 &&
+      rawLength <= MAX_LENGTH
+    ? rawLength
+    : DEFAULT_LENGTH;
 
   // Empty requirements (no URL params) = simple mode with all defaults on.
   // All-basic requirements = simple mode with matching toggles.
@@ -83,11 +89,16 @@ export function Generator(props: Props) {
   const requirements = signal<Requirement[]>(initReqs);
   const charLength = signal<number>(lengthArg);
 
-  const passwords = signal<string[]>(
-    new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
+  // Contradictory URL requirements render blank; Generate shows the alert.
+  let initialPasswords: string[];
+  try {
+    initialPasswords = new Array(NUMBER_OF_PASSWORDS).fill("").map(() =>
       genChars(lengthArg, initReqs)
-    ),
-  );
+    );
+  } catch {
+    initialPasswords = new Array(NUMBER_OF_PASSWORDS).fill("");
+  }
+  const passwords = signal<string[]>(initialPasswords);
 
   // Live URL sync — runs whenever requirements or charLength change
   useEffect(() => {

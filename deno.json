@@ -20,7 +20,7 @@
   },
   "exclude": ["**/_fresh/*", ".playwright-mcp/"],
   "imports": {
-    "@jakeave/synthima": "jsr:@jakeave/synthima@^0.0.3",
+    "@jakeave/synthima": "jsr:@jakeave/synthima@^0.1.0",
     "@modelcontextprotocol/server": "npm:@modelcontextprotocol/server@^2.0.0",
     "@modelcontextprotocol/server/stdio": "npm:@modelcontextprotocol/server@^2.0.0/stdio",
     "@modelcontextprotocol/client": "npm:@modelcontextprotocol/client@^2.0.0",
