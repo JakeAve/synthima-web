@@ -71,7 +71,10 @@ export function CharSet(props: Props) {
               props.onDirectEdit?.();
               const text = e.currentTarget.value;
               const arr = [...reqSignal.peek()];
-              arr[index] = { ...arr[index], min: Number(text) };
+              arr[index] = {
+                ...arr[index],
+                min: Math.trunc(Number(text)) || 0,
+              };
               reqSignal.value = arr;
             }}
           />
@@ -94,7 +97,10 @@ export function CharSet(props: Props) {
               props.onDirectEdit?.();
               const text = e.currentTarget.value;
               const arr = [...reqSignal.peek()];
-              arr[index] = { ...arr[index], max: Number(text) };
+              arr[index] = {
+                ...arr[index],
+                max: Math.trunc(Number(text)) || 0,
+              };
               reqSignal.value = arr;
             }}
           />

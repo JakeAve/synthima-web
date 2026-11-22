@@ -183,3 +183,13 @@ Deno.test("serializeRequirements: raw charSet with non-default min emits only ch
   );
   assertEquals(params.getAll("r"), ["XYZ"]);
 });
+
+Deno.test("parseRequirements: fractional/negative/malformed min and max are ignored", () => {
+  const { requirements } = parseRequirements(
+    new URLSearchParams("r=lowercase:1.5:2.5&r=numbers:-1:-2&r=special:x:"),
+  );
+  for (const r of requirements) {
+    assertEquals(r.min, 1);
+    assertEquals("max" in r, false);
+  }
+});

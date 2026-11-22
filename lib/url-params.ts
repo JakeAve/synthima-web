@@ -11,6 +11,13 @@ const CHARSET_TO_KEY_MAP = new Map(
   CHAR_SET_PRESETS.map((p) => [p.charSet, p.key]),
 );
 
+/** A usable min/max count: a non-negative integer, else undefined. */
+function toCount(text: string | undefined): number | undefined {
+  if (text === undefined || text.trim() === "") return undefined;
+  const n = Number(text);
+  return Number.isInteger(n) && n >= 0 ? n : undefined;
+}
+
 export function parseRequirements(
   params: URLSearchParams,
 ): { requirements: Requirement[]; length: number } {
@@ -24,12 +31,11 @@ export function parseRequirements(
     const parts = raw.split(":");
     const preset = PRESET_KEY_MAP.get(parts[0]);
     if (preset) {
-      const min = parts[1] !== undefined ? Number(parts[1]) : 1;
-      const max = parts[2] !== undefined ? Number(parts[2]) : undefined;
+      const max = toCount(parts[2]);
       requirements.push({
         charSet: preset.charSet,
-        min: isNaN(min) ? 1 : min,
-        ...(max !== undefined && !isNaN(max) ? { max } : {}),
+        min: toCount(parts[1]) ?? 1,
+        ...(max !== undefined ? { max } : {}),
       });
     } else {
       requirements.push({ charSet: raw, min: 1 });

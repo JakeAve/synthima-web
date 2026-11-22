@@ -8,7 +8,7 @@
     "jsr:@fresh/core@2": "2.3.3",
     "jsr:@fresh/core@^2.3.3": "2.3.3",
     "jsr:@fresh/plugin-vite@1": "1.1.2",
-    "jsr:@jakeave/synthima@^0.0.3": "0.0.3",
+    "jsr:@jakeave/synthima@0.1": "0.1.0",
     "jsr:@std/assert@1": "1.0.19",
     "jsr:@std/bytes@^1.0.6": "1.0.6",
     "jsr:@std/dotenv@~0.225.5": "0.225.6",
@@ -120,8 +120,8 @@
         "npm:vite@^7.1.4"
       ]
     },
-    "@jakeave/synthima@0.0.3": {
-      "integrity": "063f1b689399b611bd53abdc08e8e6f320f98beedc76aa2194c757fb8e5399d2"
+    "@jakeave/synthima@0.1.0": {
+      "integrity": "17a812a7e0fa688fdc258b9cc058826524c94f42eca368cae47c430fccaea69a"
     },
     "@std/assert@1.0.19": {
       "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
@@ -1559,7 +1559,7 @@
     "dependencies": [
       "jsr:@fresh/core@^2.3.3",
       "jsr:@fresh/plugin-vite@1",
-      "jsr:@jakeave/synthima@^0.0.3",
+      "jsr:@jakeave/synthima@0.1",
       "npm:@modelcontextprotocol/client@2",
       "npm:@modelcontextprotocol/server@2",
       "npm:@preact/signals@^2.9.0",
